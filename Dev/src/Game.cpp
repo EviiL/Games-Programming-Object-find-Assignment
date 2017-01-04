@@ -120,6 +120,8 @@ Game::Game() {
 
 	glfwSetKeyCallback(m_WindowManager_.getWindow(), key_callback);
 	ResourceManager::getInstance()->LoadShader("Shaders/default_shader.vert", "Shaders/default_shader.frag", "default");
+	ResourceManager::getInstance()->LoadShader("Shaders/texture_shader.vert", "Shaders/texture_shader.frag", "texture");
+	ResourceManager::getInstance()->loadTexture("Textures/uvtemplate.bmp", GL_FALSE, "TEST");
 
 
 	m_Renderer_ = new Renderer(m_WindowManager_.getWindow());

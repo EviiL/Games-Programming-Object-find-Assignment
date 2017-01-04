@@ -9,13 +9,12 @@
 #include "Rendering\Mesh.h"
 #include "Components\TransformComponent.h"
 
+enum ComponentType {
+	COLOUR,
+	TEXTURE
+};
 
 class RenderComponent : public Component {
-
-	enum ComponentType {
-		COLOUR,
-		TEXTURE
-	};
 
 private:
 

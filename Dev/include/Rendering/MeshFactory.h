@@ -55,7 +55,9 @@ public:
 
 	MeshFactory();
 	//Create a Mesh from a loaded path.
-	Mesh * create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, glm::vec3 pScale);
+	Mesh * create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, glm::vec3 pScale, glm::vec4 m_Colour_ = glm::vec4(0.6, 0.6, 0.6, 1.0));
+
+	Mesh * create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, glm::vec3 pScale, std::string pTexture);
 
 	//Create a square Mesh.
 	Mesh * create(glm::vec3 pPos, glm::vec3 pRot, glm::vec3 pScale);

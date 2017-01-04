@@ -1,7 +1,7 @@
 #include "Rendering\Texture.h"
 
-
-Texture::Texture(GLuint width, GLuint height, unsigned char* data) {
+//Create a Texture and set some default values.
+Texture::Texture(GLuint width, GLuint height, unsigned char* data) : Width(0), Height(0), Internal_Format(GL_RGBA), Image_Format(GL_BGRA), Wrap_S(GL_REPEAT), Wrap_T(GL_REPEAT), Filter_Min(GL_LINEAR), Filter_Max(GL_NEAREST) {
 	glGenTextures(1, &this->ID);
 
 	this->Width = width;

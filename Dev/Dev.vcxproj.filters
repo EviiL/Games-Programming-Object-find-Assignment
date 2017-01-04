@@ -149,5 +149,7 @@
     <None Include="ClassDiagram.cd" />
     <None Include="Shaders\default_shader.vert" />
     <None Include="Shaders\default_shader.frag" />
+    <None Include="Shaders\texture_shader.frag" />
+    <None Include="Shaders\texture_shader.vert" />
   </ItemGroup>
 </Project>

@@ -58,8 +58,10 @@ void RenderComponent::Render(glm::mat4 pProj, glm::mat4 pView) {
 				ResourceManager::getInstance()->GetShader(m_Shader_).SetVector4f("colour", (*iter)->getColour());
 			}
 			else {
+				//Assign and handle the texture for the mesh.
 				glActiveTexture(GL_TEXTURE0);
 				ResourceManager::getInstance()->GetTexture((*iter)->getTextureID()).Bind();
+				ResourceManager::getInstance()->GetShader(m_Shader_).SetInteger("tex", 0);
 
 			}
 
@@ -76,6 +78,7 @@ void RenderComponent::Render(glm::mat4 pProj, glm::mat4 pView) {
 			ResourceManager::getInstance()->GetShader(m_Shader_).SetMatrix4("mModel", model);
 			glBindVertexArray(*(*iter)->getRenderData());
 			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
 			glDrawArrays(GL_TRIANGLES, 0, (*iter)->getDrawSize());
 		}
 	}
