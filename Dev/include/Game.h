@@ -8,6 +8,7 @@
 #include "Rendering\Renderer.h"
 #include "KeyboardHandler.h"
 #include "WindowManager.h"
+#include "SceneManager.h"
 
 
 //Could probably do with being renamed to Engine or similar.
@@ -21,7 +22,7 @@ private:
 	WindowManager m_WindowManager_;
 	Renderer * m_Renderer_;
 
-	Scene * m_Scene_;
+	SceneManager m_SceneManager_;
 
 	void CreateScene();
 

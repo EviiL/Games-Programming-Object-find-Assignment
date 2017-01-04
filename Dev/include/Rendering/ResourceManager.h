@@ -9,6 +9,7 @@
 
 #include "Shader.h"
 #include "RawMesh.h"
+#include "Texture.h"
 
 class ResourceManager {
 private:
@@ -20,6 +21,7 @@ private:
 	Shader loadShaderFromFile(const GLchar *vShaderFile, const GLchar *fShaderFile);
 
 	std::map<std::string, Shader>    Shaders;
+	std::map<std::string, Texture>   Textures;
 	std::map<std::string, RawMesh>	 Meshes;
 	std::string m_currentShaderIdentifier_;
 
@@ -49,6 +51,10 @@ public:
 	Shader LoadShader(const GLchar *vShaderFile, const GLchar *fShaderFile, std::string name);
 	// Retrieves a stored sader
 	Shader GetShader(std::string name);
+
+	Texture loadTexture(const GLchar *file, GLboolean alpha, std::string name);
+	Texture GetTexture(std::string name);
+
 
 	RawMesh * RegisterMesh(std::string pPath, RawMesh pMesh);
 	RawMesh GetRawMesh(std::string pPath);

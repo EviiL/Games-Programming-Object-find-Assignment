@@ -40,6 +40,7 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 			}
 
 			rawMesh = RawMesh(verts, UVs);
+			ResourceManager::getInstance()->RegisterMesh(pPath, rawMesh);
 		}
 	}
 

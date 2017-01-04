@@ -6,6 +6,7 @@
 #include "Rendering\MeshFactory.h"
 
 
+
 static void error_callback(int error, const char* description)
 {
 	fputs(description, stderr);
@@ -25,7 +26,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 void Game::update(double dTime) {
 	//Update the scene, close to the initial loop to minimise time discrepancy.
 	//TODO implement custom timer for better time management.
-	m_Scene_->Update(dTime);
+	m_SceneManager_.getCurrentScene()->Update(dTime);
 }
 
 
@@ -40,7 +41,7 @@ void Game::beginLoop() {
 
 
 	//Start the Scenes Components.
-	m_Scene_->Start();
+	m_SceneManager_.getCurrentScene()->Start();
 
 	while (!glfwWindowShouldClose(m_WindowManager_.getWindow()))
 	{
@@ -104,13 +105,14 @@ Game::Game() {
 		exit(EXIT_FAILURE);
 
 	m_WindowManager_.createWindow("Game", 0, 0, 1280, 720);
+	m_WindowManager_.toggleVSYNC(false);
 	
 	//m_Window_ = glfwCreateWindow(1280, 720, "Game", NULL, NULL);
 	glfwMakeContextCurrent(m_WindowManager_.getWindow());
 
 	if (!m_WindowManager_.getWindow())
 	{
-		glfwTerminate();
+		glfwTerminate();	
 		exit(EXIT_FAILURE);
 	}
 
@@ -119,30 +121,22 @@ Game::Game() {
 	glfwSetKeyCallback(m_WindowManager_.getWindow(), key_callback);
 	ResourceManager::getInstance()->LoadShader("Shaders/default_shader.vert", "Shaders/default_shader.frag", "default");
 
-	m_Scene_ = new Scene("Main");
 
 	m_Renderer_ = new Renderer(m_WindowManager_.getWindow());
-	m_Renderer_->setScene(m_Scene_);
 
-	CreateScene();
+	m_SceneManager_ = SceneManager();
+
+	if (m_SceneManager_.LoadScene(" ")) {
+		m_SceneManager_.UpdateRenderer(m_Renderer_);
+	}
+
 
 }
 
 //Create the Scene here. Should be data driven.
 void Game::CreateScene() {
 
-	Object Cube = Object("Cube");
-	int index = m_Scene_->AddObject(Cube);
-
-	RenderComponent * renderC = new RenderComponent(&m_Scene_->getObjects()[index], "default");
-	PlayerKeyboardControlComponent * keyComp = new PlayerKeyboardControlComponent(&m_Scene_->getObjects()[index]);
-	MeshFactory factory;
-	//Mesh &mesh = factory.create(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-	renderC->AttachMesh(factory.create("Models/cube.obj",glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-	renderC->AttachMesh(factory.create("Models/cube.obj", glm::vec3(-5.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 2.0f)));
-	//renderC->AttachMesh(factory.create(glm::vec3(-6.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(2.0f, 1.0f, 1.0f)));
-	m_Scene_->getObjects()[index].registerComponent(renderC);
-	m_Scene_->getObjects()[index].registerComponent(keyComp);
+	
 
 }
 
