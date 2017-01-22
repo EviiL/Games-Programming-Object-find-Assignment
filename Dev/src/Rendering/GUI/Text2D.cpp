@@ -19,12 +19,6 @@ Text2D::Text2D(std::string pShader, std::string pText) {
 	m_Scale_ = glm::vec2(1.0, 1.0);
 }
 
-void Text2D::print(std::string pText, int pX, int pY, int pSize) {
-	
-
-
-}
-
 
 
 void Text2D::Start() {

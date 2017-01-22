@@ -6,10 +6,13 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
+
+//Canvas element for drawing a simple rectangle.
 class CanvasRect : public CanvasElement {
 
 private:
 
+	//GUI Mesh to be rendered.
 	GUIMesh m_Mesh_;
 	glm::vec4 m_Colour_;
 

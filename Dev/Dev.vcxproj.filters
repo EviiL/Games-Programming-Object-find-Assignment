@@ -102,6 +102,12 @@
     <ClCompile Include="src\XML\XMLParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\RobotAnimationComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\DistanceComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -221,6 +227,12 @@
     <ClInclude Include="include\XML\XMLParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Components\RobotAnimationComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\DistanceComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glew32.dll" />
@@ -228,17 +240,15 @@
     <None Include="Shaders\default_shader.frag" />
     <None Include="Shaders\texture_shader.frag" />
     <None Include="Shaders\texture_shader.vert" />
-    <None Include="ClassDiagram.cd" />
     <None Include="Shaders\gui_plain_shader.vert" />
     <None Include="Shaders\gui_plain_shader.frag" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Shaders\text_shader.vert" />
     <None Include="Shaders\text_shader.frag" />
-    <None Include="ClassDiagram2.cd" />
-    <None Include="ClassDiagram3.cd" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="XML\Scene.xml" />
     <Xml Include="XML\MainMenu.xml" />
+    <Xml Include="XML\GameOver.xml" />
   </ItemGroup>
 </Project>

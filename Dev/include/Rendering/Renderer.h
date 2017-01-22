@@ -13,11 +13,15 @@
 #include "GameObjectVectorWrapper.h"
 
 
-
+//The main game renderer for rendering all the RenderComponents within the scene.
 class Renderer {
 
 private:
+
+	//The current scene.
 	Scene * m_CurrentScene_;
+
+	//Vector of all game objects with a render component.
 	GameObjectVectorWrapper::t_GameObject_Vector_ m_sceneGameObjects_;
 	GLFWwindow * m_Window_;
 

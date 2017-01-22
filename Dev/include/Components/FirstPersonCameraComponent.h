@@ -24,10 +24,15 @@ private:
 	float m_fSpeed_ = 0.003f; // 3 units / second
 	float m_fMouseSpeed_ = 0.001f;
 
+	//Up Vector.
 	glm::vec3 m_Up_;
 
+
+	//View Matrix created by the bind function.
 	glm::mat4 m_View_;
 public:
+
+	//First Person camera component.
 	FirstPersonCameraComponent(GameObject * pParent, std::string pName, glm::vec3 pPosition = glm::vec3(0.0f, 0.0f, 0.0f));
 
 	void Update(double dt);
@@ -36,6 +41,7 @@ public:
 	void Destroy();
 	void Start();
 
+	//The horizontal angle for the camera.
 	float m_fHorizontalAngle_;
 
 

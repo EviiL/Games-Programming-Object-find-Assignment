@@ -8,19 +8,23 @@
 
 #include <glm\gtc\matrix_transform.hpp>
 
+
+//Button Element for GUI Rendering
 class CanvasButton : public CanvasElement {
 
+	//the click function to be ran upon the button being pressed type defintion.
 	typedef std::function< void(void) > t_Click_Handler;
 
 private:
 
+	//Mesh of the Button for drawing.
 	GUIMesh m_Mesh_;
 	glm::vec4 m_Colour_;
 	glm::vec4 m_HoverColour_;
 
 
 	glm::mat4 m_Model_;
-
+	//the click function to be ran upon the button being pressed
 	t_Click_Handler m_ClickHandle = nullptr;
 
 

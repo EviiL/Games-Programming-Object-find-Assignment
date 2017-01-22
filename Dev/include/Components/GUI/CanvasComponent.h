@@ -12,6 +12,8 @@ class CanvasComponent : public Component {
 private:
 	CanvasElementVectorWrapper::t_Canvas_Elements_Vector_ m_Elements_;
 public:
+
+	//Canvas Component to hold all the GUI elements
 	CanvasComponent(GameObject * pObject);
 
 	void Update(double dt);

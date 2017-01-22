@@ -8,6 +8,8 @@
 #include "ComponentVectorWrapper.h"
 #include "Components\CameraComponent.h"
 
+
+//Main Scene class. This holds effectivly the entire game.
 class Scene {
 	
 
@@ -18,6 +20,7 @@ public:
 
 	}
 
+	//Add a game object to the scene.
 	int AddGameObject(GameObject pGameObject);
 	void RemoveGameObject(GameObject * pGameObject);
 
@@ -39,6 +42,7 @@ public:
 	}
 	bool M_bIsDirty = true;
 
+	//Attach a main camera component to the scene. Only one camera can be the main and in use at any point.
 	void attachMainCameraComponent(CameraComponent * pCamera) {
 		if (m_CurrentCamera_ != nullptr)
 			m_CurrentCamera_->SetActive(false);
@@ -46,6 +50,7 @@ public:
 		m_CurrentCamera_->SetActive(true);
 	}
 
+	//Get the currently bound camera.
 	CameraComponent * getBoundCamera() {
 		if (m_CurrentCamera_ == nullptr)
 			return nullptr;

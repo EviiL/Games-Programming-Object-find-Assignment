@@ -9,6 +9,7 @@
 
 class Component;
 
+//Game Object container class, used to hold components and manage their lifecycle.
 class GameObject {
 
 public:
@@ -18,12 +19,18 @@ public:
 
 	}
 
+	//Objects name.
 	const char* M_Name_;
 
+	//Register and Remove a component from the object.
 	void registerComponent(Component * pComponent);
 	void removeComponent(Component * pComponent);
 
+
+	//Update all the components.
 	void UpdateComponents(double dt);
+
+	//Late update all components.
 	void LateUpdateComponents();
 
 	ComponentVectorWrapper::t_Components_Vector_& getComponents() {
@@ -39,6 +46,8 @@ public:
 		}*/
 	}
 	
+
+	//Get the Component by its type. As each component should be unique, only one of its type should exist, so filtering by type is effective to get a specific component.
 	template<typename T>
 	T* GetComponentByType() {
 		try {
@@ -53,6 +62,7 @@ public:
 			__debugbreak();
 		}
 	}
+	//find a Component by its type. As each component should be unique, only one of its type should exist, so filtering by type is effective to find a specific component.
 
 	template<typename T>
 	bool CheckComponentTypeExists() {

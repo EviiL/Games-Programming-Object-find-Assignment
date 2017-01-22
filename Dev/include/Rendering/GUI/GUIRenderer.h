@@ -14,21 +14,25 @@
 #include "GameObjectVectorWrapper.h"
 #include "Components\GUI\CanvasComponent.h"
 
-
+//Unique renderer designed to render the ui only.
 class GUIRenderer {
 
+	//Type of GUI being displayed, unused right now.
 	enum GUIType {
 		FULL_MENU,
 		OVERLAY
 	};
 
 private:
+	//The current scene to be rendering.
 	Scene * m_CurrentScene_;
+	//Game Objects with a canvas component.
 	GameObjectVectorWrapper::t_GameObject_Vector_ m_sceneGameObjects_;
+	//current window.
 	GLFWwindow * m_Window_;
 
-
-	glm::mat4 Projection = glm::ortho((1280.f / 2) * 0, 1280.f, 720.f, (720.f / 2) * 0, -1.0f, 1.0f);
+	//The orthographic projection used to overlay the ui.
+	glm::mat4 Projection = glm::ortho(0.0f, 1280.f, 720.f, 0.0f, -1.0f, 1.0f);
 
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(

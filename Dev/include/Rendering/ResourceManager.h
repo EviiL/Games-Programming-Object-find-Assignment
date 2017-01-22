@@ -14,13 +14,17 @@
 #include "RawMesh.h"
 #include "Texture.h"
 
+//Characters for the Text map.
 struct Character {
 	GLfloat x, y, w, h;
 	GLint textureID;
 };
 
+
+//The Resource manager acts as a master manager for all resources within the game, to keep all data loaded and avoid going out of scope.
 class ResourceManager {
 
+	//typedefinition for click callbacks.
 	typedef std::function< void(void) > t_Click_Handler;
 private:
 	static ResourceManager * s_instance;
@@ -30,16 +34,18 @@ private:
 	// Loads and generates a shader from file
 	Shader loadShaderFromFile(const GLchar *vShaderFile, const GLchar *fShaderFile);
 
-	std::map<std::string, Shader>    Shaders;
-	std::map<std::string, Texture>   Textures;
-	std::map<std::string, RawMesh>	 Meshes;
-	std::map<GLchar, Character> Characters;
-	std::map<std::string, t_Click_Handler> buttonClickFunctions;
-	std::map<std::string, std::string> textIdentifiers;
+	std::map<std::string, Shader>    Shaders;	//All Shaders
+	std::map<std::string, Texture>   Textures;	//All Textures
+	std::map<std::string, RawMesh>	 Meshes;	//All Raw Mesh data
+	std::map<GLchar, Character> Characters;		//All Characters
+	std::map<std::string, t_Click_Handler> buttonClickFunctions;	//All The click Callbacks.
+	std::map<std::string, std::string> textIdentifiers;	//All unique text id's
 
-	std::string m_currentShaderIdentifier_;
+	std::string m_currentShaderIdentifier_;	//Current shader in use.
 
 public:
+
+	//Get the instance of the resource manager.
 	static ResourceManager *getInstance()
 	{
 
@@ -58,10 +64,13 @@ public:
 
 	bool useShader(std::string pId);
 
+
+	//Get the current shaders id.
 	std::string getCurrentShaderID() {
 		return m_currentShaderIdentifier_;
 	}
 
+	//Load a shader and compile it.
 	Shader LoadShader(const GLchar *vShaderFile, const GLchar *fShaderFile, std::string name);
 	// Retrieves a stored sader
 	Shader GetShader(std::string name);
@@ -69,14 +78,16 @@ public:
 	Texture loadTexture(const GLchar *file, GLboolean alpha, std::string name);
 	Texture GetTexture(std::string name);
 
-
+	//Register a mesh to prevent reloading the file.
 	RawMesh * RegisterMesh(std::string pPath, RawMesh pMesh);
 	RawMesh GetRawMesh(std::string pPath);
 
+	//Get a character given its ascii data.
 	Character getCharacter(GLchar pChar){
 		return Characters[pChar];
 	}
 
+	//Get the text from the given key.
 	std::string getText(std::string pKey) {
 		return textIdentifiers[pKey];
 	}
@@ -94,6 +105,7 @@ public:
 		buttonClickFunctions[pID] = pClick;
 	}
 
+	//Get the click callback function.
 	t_Click_Handler getButtonFunctions(std::string pFunction) {
 		return buttonClickFunctions[pFunction];
 	}

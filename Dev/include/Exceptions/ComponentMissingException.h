@@ -6,6 +6,7 @@
 
 using namespace std;
 
+//Called if a Component is missing.
 struct ComponentMissingException : public exception {
 
 	virtual const char* what() const throw()

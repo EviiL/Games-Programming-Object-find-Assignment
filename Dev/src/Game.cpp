@@ -51,16 +51,29 @@ void Game::beginLoop() {
 
 	while (!glfwWindowShouldClose(m_WindowManager_.getWindow()))
 	{
+		ResourceManager::getInstance()->assignTextIdentifier("score", "Current Score : " + to_string(m_Score_));
 
-		
+		if (m_Score_ >= 3) {
+			if (m_WindowManager_.getSceneManager()->LoadScene("XML/GameOver.xml")) {
+				m_WindowManager_.toggleCursorDraw(true);
+				m_WindowManager_.getSceneManager()->switchScene();
+				m_WindowManager_.getSceneManager()->UpdateRenderers(m_Renderer_, m_GUIRenderer_);
+
+				m_Score_ = 0;
+
+			}
+		}
+
+
+
 		// Measure speed
 		double currentTime = glfwGetTime();
 		nbFrames++;
 
 		if (currentTime - lastTime >= 1.0) { 
-			std::cout << nbFrames << std::endl;
+			//std::cout << nbFrames << std::endl;
+			ResourceManager::getInstance()->assignTextIdentifier("fps",  to_string(nbFrames) + "fps");
 
-			ResourceManager::getInstance()->assignTextIdentifier("fps", to_string(nbFrames));
 			nbFrames = 0;
 			lastTime += 1.0;
 
@@ -123,7 +136,7 @@ void Game::switchScene(std::string pPath) {
 	if (m_WindowManager_.getSceneManager()->getCurrentScene() != nullptr)
 		m_WindowManager_.getSceneManager()->getCurrentScene()->Start();
 
-	//m_WindowManager_.getSceneManager()->UpdateRenderers(m_Renderer_, m_GUIRenderer_);
+	m_WindowManager_.getSceneManager()->UpdateRenderers(m_Renderer_, m_GUIRenderer_);
 
 }
 
@@ -166,6 +179,7 @@ Game::Game() {
 	ResourceManager::getInstance()->setupTextCharacters("FONT");
 
 	Proxy::getInstance()->AssignWindowManager(&m_WindowManager_);
+	Proxy::getInstance()->AssignGame(this);
 
 	m_WindowManager_.toggleCursorDraw(false);
 
@@ -197,10 +211,6 @@ void Game::CreateScene() {
 
 
 void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-
-
-
-	std::cout << "Hi Jaime" << std::endl;
 	InputHandler::invokeButton(button, action, mods);
 }
 

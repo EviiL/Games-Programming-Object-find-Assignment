@@ -10,6 +10,8 @@ protected:
 
 	bool m_Active_ = false; //Default False Value
 public:
+
+	//Abstract Camera Component to be inherited for the other camera types.
 	CameraComponent() {}
 	CameraComponent(GameObject * pParent) {
 		m_GameObjectParent_ = pParent;
@@ -26,6 +28,8 @@ public:
 	virtual void Destroy() = 0;
 	virtual void Start() = 0;
 
+
+	//Used to bind the camera to be the current active camera. This is used by the renderer only.
 	virtual glm::mat4 Bind() = 0;
 
 

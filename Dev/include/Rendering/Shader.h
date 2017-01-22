@@ -24,16 +24,27 @@ public:
 	// Compiles the shader from given source code
 	void Compile(const GLchar *vertexSource, const GLchar *fragmentSource); 
 
-
+	//Various Shader uniform assignment functions. Utility functions.
 	void SetFloat(const GLchar *name, GLfloat value);
+
 	void SetInteger(const GLchar *name, GLint value);
+
 	void SetVector2f(const GLchar *name, GLfloat x, GLfloat y);
+
 	void SetVector2f(const GLchar *name, const glm::vec2 &value);
+
 	void SetVector3f(const GLchar *name, GLfloat x, GLfloat y, GLfloat z);
+
 	void SetVector3f(const GLchar *name, const glm::vec3 &value);
+
 	void SetVector4f(const GLchar *name, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+
 	void SetVector4f(const GLchar *name, const glm::vec4 &value);
+
+	void SetMatrix3(const GLchar *name, const glm::mat3 &matrix);
+
 	void SetMatrix4(const GLchar *name, const glm::mat4 &matrix);
+
 
 private:
 	// Checks if compilation or linking failed and if so, print the error logs

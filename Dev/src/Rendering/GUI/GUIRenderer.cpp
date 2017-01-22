@@ -12,6 +12,8 @@ GUIRenderer::GUIRenderer(GLFWwindow * pWindow) {
 void GUIRenderer::Render() {
 
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);     // Cull back facing polygons
+	glCullFace(GL_BACK);
 
 
 	if (m_CurrentScene_ != nullptr) {

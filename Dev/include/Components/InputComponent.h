@@ -19,6 +19,7 @@ public:
 	virtual void Destroy();
 	virtual void Start();
 
+
 };
 
 #endif // !_INPUT_COMPONENT_H_

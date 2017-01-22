@@ -1,6 +1,7 @@
 #include "XML\XMLParser.h"
 #include "Rendering\GUI\CanvasButton.h"
-
+#include "Components\RobotAnimationComponent.h"
+#include "Components\DistanceComponent.h"
 
 XMLParser::XMLParser() {
 
@@ -122,19 +123,31 @@ glm::vec4 XMLParser::GenerateVec4(XMLElement * element) {
 void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pIndex) {
 	const char* componentName = pElement->Name();
 
+	//Setup the Transform Component
 	if (checkStrings(componentName, "position")) {
 		TransformComponent * tc = pScene->getGameObjects()->at(pIndex).GetComponentByType<TransformComponent>();
 	
 		tc->setPosition(GenerateVec3(pElement));
 	}
 
+	//Setup the Animation Component
+	if (checkStrings(componentName, "animate")) {
 
+		RobotAnimationComponent * r = new RobotAnimationComponent(&pScene->getGameObjects()->at(pIndex));
+
+		pScene->getGameObjects()->at(pIndex).registerComponent(r);
+		r->setParent(&pScene->getGameObjects()->at(pIndex));
+	}
+
+	//Setup the Render Component
 	if (checkStrings(componentName, "mesh")) {
 
 		MeshFactory factory;
 
 
 		const char* shader = pElement->Attribute("shader");
+		const char* name = pElement->Attribute("name");
+
 		int type = 0;
 
 		pElement->QueryIntAttribute("type", &type);
@@ -149,7 +162,8 @@ void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pInd
 		}
 		XMLElement * child = pElement->FirstChildElement();
 
-		glm::vec3 position, rotation, scale;
+		glm::vec3 position, rotation, scale, pivot = glm::vec3(0.0f,0.0f,0.0f);
+		glm::vec4 colour = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
 		const char* path;
 		const char* texturePath;
 		while (child != nullptr)
@@ -158,7 +172,9 @@ void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pInd
 			if (checkStrings(childName, "path")) {
 				path = child->GetText();
 			}
-
+			if (checkStrings(childName, "pivot")) {
+				pivot = GenerateVec3(child);
+			}
 			if (checkStrings(childName, "position")) {
 				position = GenerateVec3(child);
 			}
@@ -173,23 +189,73 @@ void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pInd
 				ResourceManager::getInstance()->loadTexture(texturePath, GL_FALSE, texturePath);
 
 			}
+			if (checkStrings(childName, "colour")) {
+				colour = GenerateVec4(child);
+			}
 			child = child->NextSiblingElement();
 		}
 
+		Mesh * mesh;
+
 		if(path != nullptr){
 			if(type == 1)
-				render->AttachMesh(factory.create(path, position, rotation, scale , texturePath));
+				mesh = factory.create(path, position, rotation, scale , texturePath);
 			else
-				render->AttachMesh(factory.create(path, position, rotation, scale));
-
+				mesh = factory.create(path, position, rotation, scale, colour);
 
 		}
+
+		mesh->setPivotPoint(pivot);
+		mesh->setColour(colour);
+
+		if (checkStrings(name ,"RobotArmRight")) {
+			if (pScene->getGameObjects()->at(pIndex).CheckComponentTypeExists<RobotAnimationComponent>()) {
+				pScene->getGameObjects()->at(pIndex).GetComponentByType<RobotAnimationComponent>()->attachRightArm(mesh);
+			}
+		}
+		if (checkStrings(name, "RobotArmLeft")) {
+			if (pScene->getGameObjects()->at(pIndex).CheckComponentTypeExists<RobotAnimationComponent>()) {
+				pScene->getGameObjects()->at(pIndex).GetComponentByType<RobotAnimationComponent>()->attachLeftArm(mesh);
+			}
+		}
+		if (checkStrings(name, "RobotLegLeft")) {
+			if (pScene->getGameObjects()->at(pIndex).CheckComponentTypeExists<RobotAnimationComponent>()) {
+				pScene->getGameObjects()->at(pIndex).GetComponentByType<RobotAnimationComponent>()->attachLeftLeg(mesh);
+			}
+		}
+		if (checkStrings(name, "RobotLegRight")) {
+			if (pScene->getGameObjects()->at(pIndex).CheckComponentTypeExists<RobotAnimationComponent>()) {
+				pScene->getGameObjects()->at(pIndex).GetComponentByType<RobotAnimationComponent>()->attachRightLeg(mesh);
+			}
+		}
+		render->AttachMesh(mesh);
+		
 		if (!pScene->getGameObjects()->at(pIndex).CheckComponentTypeExists<RenderComponent>()) {
 			pScene->getGameObjects()->at(pIndex).registerComponent(render);
 			render->setParent(&pScene->getGameObjects()->at(pIndex));
 		}
 	}
 
+	//Setup the Interaction Component.
+	if (checkStrings(componentName, "interaction")) {
+		float distance = 0.0;
+		pElement->QueryFloatText(&distance);
+
+		TransformComponent * tc;
+
+		//Search for a unique component.
+
+		for (int i = 0; i < pScene->getGameObjects()->size(); i++) {
+			if (pScene->getGameObjects()->at(i).CheckComponentTypeExists<PlayerKeyboardControlComponent>())
+				tc = pScene->getGameObjects()->at(i).GetComponentByType<TransformComponent>();
+		}
+
+
+		DistanceComponent * dc = new DistanceComponent(&pScene->getGameObjects()->at(pIndex), tc, distance);
+
+		pScene->getGameObjects()->at(pIndex).registerComponent(dc);
+		dc->setParent(&pScene->getGameObjects()->at(pIndex));
+	}
 	if (checkStrings(componentName, "firstpersoncamera")) {
 
 		
@@ -260,6 +326,7 @@ void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pInd
 			pScene->attachMainCameraComponent(pScene->getGameObjects()->at(pIndex).GetComponentByType<ThirdPersonCameraComponent>());
 	}
 
+	//Setup the movement Component
 	if (checkStrings(componentName, "playermovementcontroller")) {
 		PlayerKeyboardControlComponent * movement = new PlayerKeyboardControlComponent(&pScene->getGameObjects()->at(pIndex));
 		pScene->getGameObjects()->at(pIndex).registerComponent(movement);
@@ -267,7 +334,7 @@ void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pInd
 
 	}
 
-
+	//Create the GUI here.
 	if (checkStrings(componentName, "canvas")) {
 		ProcessCanvas(pScene, pElement, pIndex);
 	}
@@ -275,6 +342,7 @@ void XMLParser::ProcessComponent(Scene * pScene, XMLElement * pElement, int pInd
 
 }
 
+//Process the GUI and create a canvas component for the overlay.
 void XMLParser::ProcessCanvas(Scene * pScene, XMLElement * pElement, int pIndex) {
 	const char* componentName = pElement->Name();
 

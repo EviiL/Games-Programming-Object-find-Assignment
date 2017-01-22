@@ -22,3 +22,7 @@ void Proxy::requestCursorDrawChange(bool ptoggle) {
 	m_WindowManager_->toggleCursorDraw(ptoggle);
 }
 
+void Proxy::requestScoreIncrease(int pAmount) {
+	m_Game_->setScore(m_Game_->getScore() + pAmount);
+}
+

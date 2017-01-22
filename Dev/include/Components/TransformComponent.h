@@ -7,19 +7,26 @@
 #include <glm\gtx\transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 
-
+//The Transform component. All Objects are given a transform component by default, which if necessary could be removed later.
 class TransformComponent : public Component {
 
 private:
+
+	//Position, Rotation and Scale.
 	glm::vec3 m_Position_ = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 m_Rotation_ = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 m_Scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
 
+
+	//Right and Direction vectors of the transformations.
 	glm::vec3 m_Right_;
 	glm::vec3 m_Direction_;
 
+	//Model Matrix.
 	glm::mat4 m_Model_;
 
+
+	//If the transform is dirty and requires and update.
 	bool m_bDirty_;
 public:
 	

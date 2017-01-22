@@ -5,24 +5,10 @@
 #include <vector>
 
 struct GUIMesh {
-
+	//Vertex Array Object of the mesh.
 	GLuint * VAO;
-
-	//GLfloat GUIMesh::vertices[6 * 4] = {
-	//	// Pos      // Tex
-
-
-	//	0.0f, 1.0f, 0.0f, 1.0f,
-	//	1.0f, 0.0f, 1.0f, 0.0f,
-	//	0.0f, 0.0f, 0.0f, 0.0f,
-
-	//	0.0f, 1.0f, 0.0f, 1.0f,
-	//	1.0f, 1.0f, 1.0f, 1.0f,
-	//	1.0f, 0.0f, 1.0f, 0.0f
-
-
-	//};
 	GUIMesh() {}
+
 
 	GUIMesh(int pDrawtype, std::vector<GLfloat> verts = {
 		// Pos      // Tex

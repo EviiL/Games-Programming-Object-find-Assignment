@@ -14,15 +14,18 @@
 
 struct CanvasElementVectorWrapper;
 
+//Mostly abstract class to allow a Canvas component to hold many types of element sharing a common class.
 class CanvasElement {
 
 protected:
 
+	//each element has a parent element, to create a tree.
 	CanvasElement * m_Parent_;
 
+	//Its parents absolute position.
 	glm::vec3 m_ParentAbsolutePosition_;
 
-	//Position and Scale, Rotation isnt necessary right now so isn't implemented.
+	//Position and Scale. Rotation isnt necessary right now so isn't implemented.
 	glm::vec2 m_Position_; 
 	glm::vec2 m_Scale_; 
 
@@ -41,6 +44,8 @@ public:
 	virtual void Start() = 0;
 
 	virtual void Update(float dt) = 0;
+
+	//Update all the children for the element.
 	void UpdateChildren(float dt) {
 		if(m_Children_.size() > 0)
 			for (CanvasElementVectorWrapper::t_Canvas_Elements_Iter iter = m_Children_.begin(); iter != m_Children_.end(); ++iter) {

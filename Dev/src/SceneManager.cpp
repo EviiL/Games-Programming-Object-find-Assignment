@@ -17,9 +17,12 @@ bool SceneManager::LoadScene(std::string pPath) {
 	
 	ResourceManager::getInstance()->attachButtonFunction("load", [this]()->void {LoadScene("XML/Scene.xml"); });
 	ResourceManager::getInstance()->attachButtonFunction("exit", [this]()->void {exit(EXIT_SUCCESS); });
+	ResourceManager::getInstance()->attachButtonFunction("loadMenu", [this]()->void {LoadScene("XML/MainMenu.xml"); });
+
 
 	XMLParser parser;
 	parser.Parse(pPath);
+	m_Unswitched_ = nullptr;
 
 	m_Unswitched_ = parser.LoadScene();
 	Proxy::getInstance()->setUIFocus(true);

@@ -21,11 +21,13 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 		
 		std::vector<GLfloat> verts;
 		std::vector<GLfloat> UVs;
+		std::vector<GLfloat> Normals;
+
 
 		if (LoadGameObject(pPath.c_str(), inVerts, inUVs, inNormals)) {
 			verts.reserve(inVerts.size() * 3);
 			UVs.reserve(inUVs.size() * 2);
-
+			Normals.reserve(inNormals.size() * 3);
 			for (std::vector<glm::vec3>::iterator iter = inVerts.begin(); iter != inVerts.end(); ++iter) {
 				verts.push_back((*iter).x);
 				verts.push_back((*iter).y);
@@ -39,7 +41,14 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 
 			}
 
-			rawMesh = RawMesh(verts, UVs);
+			for (std::vector<glm::vec3>::iterator iter = inNormals.begin(); iter != inNormals.end(); ++iter) {
+				Normals.push_back((*iter).x);
+				Normals.push_back((*iter).y);
+				Normals.push_back((*iter).z);
+
+			}
+
+			rawMesh = RawMesh(verts, UVs, Normals);
 			ResourceManager::getInstance()->RegisterMesh(pPath, rawMesh);
 		}
 	}
@@ -66,10 +75,12 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 
 		std::vector<GLfloat> verts;
 		std::vector<GLfloat> UVs;
+		std::vector<GLfloat> Normals;
 
 		if (LoadGameObject(pPath.c_str(), inVerts, inUVs, inNormals)) {
 			verts.reserve(inVerts.size() * 3);
 			UVs.reserve(inUVs.size() * 2);
+			Normals.reserve(inNormals.size() * 3);
 
 			for (std::vector<glm::vec3>::iterator iter = inVerts.begin(); iter != inVerts.end(); ++iter) {
 				verts.push_back((*iter).x);
@@ -84,7 +95,14 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 
 			}
 
-			rawMesh = RawMesh(verts, UVs);
+			for (std::vector<glm::vec3>::iterator iter = inNormals.begin(); iter != inNormals.end(); ++iter) {
+				Normals.push_back((*iter).x);
+				Normals.push_back((*iter).y);
+				Normals.push_back((*iter).z);
+
+			}
+
+			rawMesh = RawMesh(verts, UVs, Normals);
 			ResourceManager::getInstance()->RegisterMesh(pPath, rawMesh);
 		}
 	}

@@ -36,6 +36,7 @@ private:
 
 public:
 
+	//Third Person camera component.
 	ThirdPersonCameraComponent() {}
 	ThirdPersonCameraComponent(GameObject * pParent, std::string pName, float pDistance = 10.0f, glm::vec3 pTargetRelative = glm::vec3(0.0f, 0.0f, 0.0f));
 
