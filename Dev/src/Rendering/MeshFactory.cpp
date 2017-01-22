@@ -22,7 +22,7 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 		std::vector<GLfloat> verts;
 		std::vector<GLfloat> UVs;
 
-		if (LoadObject(pPath.c_str(), inVerts, inUVs, inNormals)) {
+		if (LoadGameObject(pPath.c_str(), inVerts, inUVs, inNormals)) {
 			verts.reserve(inVerts.size() * 3);
 			UVs.reserve(inUVs.size() * 2);
 
@@ -67,7 +67,7 @@ Mesh * MeshFactory::create(std::string pPath, glm::vec3 pPos, glm::vec3 pRot, gl
 		std::vector<GLfloat> verts;
 		std::vector<GLfloat> UVs;
 
-		if (LoadObject(pPath.c_str(), inVerts, inUVs, inNormals)) {
+		if (LoadGameObject(pPath.c_str(), inVerts, inUVs, inNormals)) {
 			verts.reserve(inVerts.size() * 3);
 			UVs.reserve(inUVs.size() * 2);
 

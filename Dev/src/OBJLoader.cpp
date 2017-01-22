@@ -1,7 +1,7 @@
 #include "OBJLoader.h"
 #include <stdio.h>
 
-bool LoadObject(const char * pPath,
+bool LoadGameObject(const char * pPath,
 	std::vector<glm::vec3>& vertices,
 	std::vector<glm::vec2>& uvs,
 	std::vector<glm::vec3>& normals

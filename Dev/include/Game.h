@@ -6,10 +6,15 @@
 
 #include <iostream>
 #include "Rendering\Renderer.h"
-#include "KeyboardHandler.h"
+#include "InputHandler.h"
 #include "WindowManager.h"
 #include "SceneManager.h"
 
+#include "Rendering\GUI\GUIRenderer.h"
+
+#include "Proxy.h"
+
+#include <cstdlib>
 
 //Could probably do with being renamed to Engine or similar.
 class Game {
@@ -21,10 +26,12 @@ public:
 private:
 	WindowManager m_WindowManager_;
 	Renderer * m_Renderer_;
-
-	SceneManager m_SceneManager_;
-
+	GUIRenderer * m_GUIRenderer_;
 	void CreateScene();
+
+	void switchScene(std::string pPath);
+
+	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 
 

@@ -1,16 +1,17 @@
 #ifndef _COMPONENT_H_
 #define _COMPONENT_H_
 
+#include <memory>
 #include <iostream>
-#include "Object.h"
+#include "GameObject.h"
 
-class Object;
+class GameObject;
 
 class Component {
 	private:
 		
 	protected:
-		Object * m_ObjectParent_;
+		GameObject * m_GameObjectParent_;
 	public:
 
 		std::string M_ComponentName;
@@ -21,6 +22,10 @@ class Component {
 		
 		virtual void Destroy() = 0;
 		virtual void Start() = 0;
+
+		void setParent(GameObject * pParent) {
+			m_GameObjectParent_ = pParent;
+		}
 
 };
 

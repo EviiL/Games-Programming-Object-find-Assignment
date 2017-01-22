@@ -15,12 +15,15 @@ private:
 	glm::vec3 m_Rotation_ = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 m_Scale_ = glm::vec3(1.0f, 1.0f, 1.0f);
 
+	glm::vec3 m_Right_;
+	glm::vec3 m_Direction_;
+
 	glm::mat4 m_Model_;
 
 	bool m_bDirty_;
 public:
 	
-	TransformComponent(Object * pParent);
+	TransformComponent(GameObject * pParent);
 
 
 	void Update(double dt);
@@ -41,6 +44,14 @@ public:
 		return m_Scale_;
 	}
 
+	glm::vec3 getRight() {
+		return m_Right_;
+	}
+
+	glm::vec3 getDirection() {
+		return m_Direction_;
+	}
+
 	void setPosition(glm::vec3 pPosition) {
 		m_Position_ = pPosition;
 		m_bDirty_ = true;
@@ -55,7 +66,14 @@ public:
 	void setScale(glm::vec3 pScale) {
 		m_Scale_ = pScale;
 		m_bDirty_ = true;
+	}
 
+	void setRight(glm::vec3 pRight) {
+		m_Right_ = pRight;
+	}
+
+	void setDirection(glm::vec3 pDirection) {
+		m_Direction_ = pDirection;
 	}
 
 	glm::mat4 getModelMatrix() {

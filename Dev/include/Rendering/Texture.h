@@ -9,12 +9,12 @@ private:
 
 public:
 
-	// Holds the ID of the texture object, used for all texture operations to reference to this particlar texture
+	// Holds the ID of the texture GameObject, used for all texture operations to reference to this particlar texture
 	GLuint ID;
 	// Texture image dimensions
 	GLuint Width, Height; // Width and height of loaded image in pixels
 						  // Texture Format
-	GLuint Internal_Format; // Format of texture object
+	GLuint Internal_Format; // Format of texture GameObject
 	GLuint Image_Format; // Format of loaded image
 						 // Texture configuration
 	GLuint Wrap_S; // Wrapping mode on S axis

@@ -1,11 +1,11 @@
 #include "Components\RenderComponent.h"
 #include "Rendering\ResourceManager.h"
 
-RenderComponent::RenderComponent(Object * pParent, std::string sShader, int pType) {
-	m_ObjectParent_ = pParent;
+RenderComponent::RenderComponent(GameObject * pParent, std::string sShader, int pType) {
+	m_GameObjectParent_ = pParent;
 	m_Shader_ = sShader;
 
-	transformComponent = m_ObjectParent_->GetComponentByType<TransformComponent>();
+	transformComponent = m_GameObjectParent_->GetComponentByType<TransformComponent>();
 	m_RenderType_ = pType;
 	M_ComponentName = "RENDER_COMPONENT";
 }
@@ -65,13 +65,16 @@ void RenderComponent::Render(glm::mat4 pProj, glm::mat4 pView) {
 
 			}
 
-			glm::mat4 model;
+			glm::mat4 model(1.0f);
 			model = glm::translate(model, p);  
-			model = glm::translate(model, glm::vec3(-0.5f * s.x, -0.5f * s.y, -0.5f * s.z)); 
+			glm::vec3 temp = p - transformComponent->getPosition();
+
+			model = glm::translate(model, glm::vec3( -temp.x , -temp.y , -temp.z));
 			model = glm::rotate(model, r.x, glm::vec3(1.0f, 0.0f, 0.0f)); 
 			model = glm::rotate(model, r.y, glm::vec3(0.0f, 1.0f, 0.0f)); 
 			model = glm::rotate(model, r.z, glm::vec3(0.0f, 0.0f, 1.0f)); 
-			model = glm::translate(model, glm::vec3(0.5f * s.x, 0.5f * s.y, 0.5f * s.z)); 
+			model = glm::translate(model, glm::vec3(temp.x , temp.y , temp.z ));
+
 			model = glm::scale(model, s);
 			
 

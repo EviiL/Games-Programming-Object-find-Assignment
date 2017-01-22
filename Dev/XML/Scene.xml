@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scene>
+  	<GameObject name="Room">
+  	  <position>
+  	    <x>0.0</x>
+  	    <y>1.0</y>
+  	    <z>0.0</z>
+  	  </position>
+  	  <mesh name="Room" shader="texture" type="1">
+  	    <path>Models\Room.obj</path>
+  	    <position>
+  	      <x>0.0</x>
+  	      <y>-5.0</y>
+  	      <z>0.0</z>
+  	    </position>
+  	    <rotation>
+  	      <x>0.0</x>
+  	      <y>0.0</y>
+  	      <z>0.0</z>
+  	    </rotation>
+  	    <scale>
+  	      <x>15.0</x>
+  	      <y>15.0</y>
+  	      <z>15.0</z>
+  	    </scale>
+  	    <texture>Textures\RoomTexture.bmp</texture>
+  	  </mesh>
+  	</GameObject>
+  
+  	<GameObject name="Player">
+  	    <position>
+  	      <x>0.0</x>
+  	      <y>50.0</y>
+  	      <z>0.0</z>
+  	    </position>
+		  <mesh name="Robot" shader="texture" type="1" >
+  	      <path>Models\cube.obj</path>
+  	      <position>
+  	        <x>0.0</x>
+  	        <y>0.0</y>
+  	        <z>0.0</z>
+  	      </position>
+  	      <rotation>
+  	        <x>0.0</x>
+  	        <y>0.0</y>
+  	        <z>0.0</z>
+  	      </rotation>
+  	      <scale>
+  	        <x>2.0</x>
+  	        <y>2.0</y>
+  	        <z>2.0</z>
+  	      </scale>
+    	    <texture>Textures\uvtemplate.bmp</texture>
+  	    </mesh>
+      <mesh name="RobotArmRight" shader="texture" type="1" >
+        <path>Models\cube.obj</path>
+        <position>
+          <x>7.5</x>
+          <y>-8.0</y>
+          <z>0.5</z>
+        </position>
+        <rotation>
+          <x>0.0</x>
+          <y>0.0</y>
+          <z>0.0</z>
+        </rotation>
+        <scale>
+          <x>1.0</x>
+          <y>3.0</y>
+          <z>1.0</z>
+        </scale>
+      <texture>Textures\uvtemplate.bmp</texture>
+      </mesh>
+
+      <mesh name="RobotArmLeft" shader="texture" type="1" >
+        <path>Models\cube.obj</path>
+        <position>
+          <x>-7.5</x>
+          <y>-8.0</y>
+          <z>0.5</z>
+        </position>
+        <rotation>
+          <x>0.0</x>
+          <y>0.0</y>
+          <z>0.0</z>
+        </rotation>
+        <scale>
+          <x>1.0</x>
+          <y>3.0</y>
+          <z>1.0</z>
+        </scale>
+        <texture>Textures\uvtemplate.bmp</texture>
+      </mesh>
+      <mesh name="RobotBody" shader="texture" type="1" >
+        <path>Models\cube.obj</path>
+        <position>
+          <x>0.0</x>
+          <y>-11.0</y>
+          <z>0.5</z>
+        </position>
+        <rotation>
+          <x>0.0</x>
+          <y>0.0</y>
+          <z>0.0</z>
+        </rotation>
+        <scale>
+          <x>4.0</x>
+          <y>7.0</y>
+          <z>1.0</z>
+        </scale>
+        <texture>Textures\uvtemplate.bmp</texture>
+      </mesh>
+  	    <firstpersoncamera name="fpsCam" main="false">
+  	       <position>
+  	          <x>0.0</x>
+  	          <y>5.0</y>
+  	          <z>2.0</z>
+  	        </position>
+  	    </firstpersoncamera>
+  	    <thirdpersoncamera name="tpsCam" main="true">
+          <position>
+            <x>10.0</x>
+            <y>5.0</y>
+            <z>2.0</z>
+          </position>
+          <distance>20</distance>
+  	    </thirdpersoncamera>
+  	    <playermovementcontroller>
+  	    </playermovementcontroller>
+  	  
+  	  
+  	  
+  	</GameObject>
+  
+  
+  
+  	<GameObject>
+      <canvas type ="ui">
+        <text shader="text">
+          <contentidentifier>fps</contentidentifier>
+          <colour>
+            <x>0.0</x>
+            <y>0.0</y>
+            <z>0.0</z>
+            <w>0.9</w>
+          </colour>
+          <position>
+            <x>0.0</x>
+            <y>0.0</y>
+          </position>
+          <scale>
+            <x>0.5</x>
+            <y>0.5</y>
+          </scale>
+        </text>
+      </canvas>
+	</GameObject>
+
+  
+</scene>

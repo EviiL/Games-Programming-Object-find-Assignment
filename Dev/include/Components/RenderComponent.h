@@ -31,7 +31,7 @@ private:
 
 public:
 
-	RenderComponent(Object * pParent, std::string sShader, int pType = COLOUR);
+	RenderComponent(GameObject * pParent, std::string sShader, int pType = COLOUR);
 
 	void Update(double dt);
 	void LateUpdate(double dt);

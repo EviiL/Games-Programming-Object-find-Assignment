@@ -9,7 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-// General purpsoe shader object. Compiles from file, generates
+// General purpsoe shader GameObject. Compiles from file, generates
 // compile/link-time error messages and hosts several utility 
 // functions for easy management.
 class Shader
@@ -37,7 +37,7 @@ public:
 
 private:
 	// Checks if compilation or linking failed and if so, print the error logs
-	void checkCompileErrors(GLuint object, std::string type);
+	void checkCompileErrors(GLuint GameObject, std::string type);
 };
 
 

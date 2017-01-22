@@ -71,16 +71,16 @@ void Shader::SetMatrix4(const GLchar *name, const glm::mat4 &matrix)
 }
 
 
-void Shader::checkCompileErrors(GLuint object, std::string type)
+void Shader::checkCompileErrors(GLuint GameObject, std::string type)
 {
 	GLint success;
 	GLchar infoLog[1024];
 	if (type != "PROGRAM")
 	{
-		glGetShaderiv(object, GL_COMPILE_STATUS, &success);
+		glGetShaderiv(GameObject, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(object, 1024, NULL, infoLog);
+			glGetShaderInfoLog(GameObject, 1024, NULL, infoLog);
 			std::cout << "| ERROR::SHADER: Compile-time error: Type: " << type << "\n"
 				<< infoLog << "\n -- --------------------------------------------------- -- "
 				<< std::endl;
@@ -88,10 +88,10 @@ void Shader::checkCompileErrors(GLuint object, std::string type)
 	}
 	else
 	{
-		glGetProgramiv(object, GL_LINK_STATUS, &success);
+		glGetProgramiv(GameObject, GL_LINK_STATUS, &success);
 		if (!success)
 		{
-			glGetProgramInfoLog(object, 1024, NULL, infoLog);
+			glGetProgramInfoLog(GameObject, 1024, NULL, infoLog);
 			std::cout << "| ERROR::Shader: Link-time error: Type: " << type << "\n"
 				<< infoLog << "\n -- --------------------------------------------------- -- "
 				<< std::endl;

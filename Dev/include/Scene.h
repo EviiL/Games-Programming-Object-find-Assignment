@@ -3,9 +3,10 @@
 
 #include <vector>
 
-#include "Object.h"
-#include "ObjectVectorWrapper.h"
+#include "GameObject.h"
+#include "GameObjectVectorWrapper.h"
 #include "ComponentVectorWrapper.h"
+#include "Components\CameraComponent.h"
 
 class Scene {
 	
@@ -17,8 +18,8 @@ public:
 
 	}
 
-	int AddObject(Object pObject);
-	void RemoveObject(Object * pObject);
+	int AddGameObject(GameObject pGameObject);
+	void RemoveGameObject(GameObject * pGameObject);
 
 	//Update the scene's contents.
 	void Update(double dt);
@@ -33,15 +34,31 @@ public:
 		return m_Name_;
 	}
 
-	ObjectVectorWrapper::t_Object_Vector_& getObjects() {
-		return m_SceneObjects_;
+	GameObjectVectorWrapper::t_GameObject_Vector_ * getGameObjects() {
+		return &m_SceneGameObjects_;
 	}
 	bool M_bIsDirty = true;
 
+	void attachMainCameraComponent(CameraComponent * pCamera) {
+		if (m_CurrentCamera_ != nullptr)
+			m_CurrentCamera_->SetActive(false);
+		m_CurrentCamera_ = pCamera;
+		m_CurrentCamera_->SetActive(true);
+	}
+
+	CameraComponent * getBoundCamera() {
+		if (m_CurrentCamera_ == nullptr)
+			return nullptr;
+		else
+			return m_CurrentCamera_;
+	}
+
 private:
 	
-	ObjectVectorWrapper::t_Object_Vector_ m_SceneObjects_;
+	GameObjectVectorWrapper::t_GameObject_Vector_ m_SceneGameObjects_;
 	
+
+	CameraComponent * m_CurrentCamera_ = nullptr;
 
 
 	std::string m_Name_;

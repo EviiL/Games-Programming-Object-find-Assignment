@@ -3,7 +3,7 @@
 
 #include "TransformComponent.h"
 #include "InputComponent.h"
-#include "Object.h"
+#include "GameObject.h"
 
 class PlayerKeyboardControlComponent : public InputComponent {
 private:
@@ -11,7 +11,7 @@ private:
 	TransformComponent * m_ParentTransform_;
 
 public:
-	PlayerKeyboardControlComponent(Object * pParent);
+	PlayerKeyboardControlComponent(GameObject * pParent);
 
 	virtual void Update(double dt);
 	virtual void LateUpdate(double dt);

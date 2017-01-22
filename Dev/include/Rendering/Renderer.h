@@ -10,7 +10,7 @@
 #include "glm\gtc\type_ptr.hpp"
 
 #include "Scene.h"
-#include "ObjectVectorWrapper.h"
+#include "GameObjectVectorWrapper.h"
 
 
 
@@ -18,7 +18,7 @@ class Renderer {
 
 private:
 	Scene * m_CurrentScene_;
-	ObjectVectorWrapper::t_Object_Vector_ m_sceneObjects_;
+	GameObjectVectorWrapper::t_GameObject_Vector_ m_sceneGameObjects_;
 	GLFWwindow * m_Window_;
 
 public:

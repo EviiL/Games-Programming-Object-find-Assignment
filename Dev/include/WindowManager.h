@@ -2,11 +2,17 @@
 #define _WINDOW_MANAGER_H_
 
 #include <iostream>
+#include "SceneManager.h"
+
 #include <GLFW\glfw3.h>
 
 class WindowManager {
 private:
 	GLFWwindow * m_Window_;
+
+	SceneManager * m_SceneManager_;
+
+	bool m_UIFocus_ = false;
 
 public:
 	WindowManager();
@@ -23,12 +29,23 @@ public:
 
 	void toggleVSYNC(bool pToggle);
 
+	void toggleFullScreen(bool pToggle);
+
 	void setCursorPosition(double pXPos, double pYPos);
 	//Add get cursor position.
+	void toggleCursorDraw(bool pToggle);
 
 	void destroyWindow();
 
 	GLFWwindow * getWindow();
+
+	SceneManager * getSceneManager() {
+		return m_SceneManager_;
+	}
+
+	void setUIfocus(bool ptoggle) {
+		m_UIFocus_ = ptoggle;
+	}
 
 };
 

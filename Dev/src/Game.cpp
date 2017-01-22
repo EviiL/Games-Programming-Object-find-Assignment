@@ -5,6 +5,7 @@
 #include "Components\PlayerKeyboardControlComponent.h"
 #include "Rendering\MeshFactory.h"
 
+#define TIXML_USE_STL
 
 
 static void error_callback(int error, const char* description)
@@ -18,7 +19,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, GL_TRUE);
 
-	KeyboardHandler::invoke(key, scancode, action, mods);
+
+		InputHandler::invokeKey(key, scancode, action, mods);
 }
 
 
@@ -26,7 +28,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 void Game::update(double dTime) {
 	//Update the scene, close to the initial loop to minimise time discrepancy.
 	//TODO implement custom timer for better time management.
-	m_SceneManager_.getCurrentScene()->Update(dTime);
+	if (m_WindowManager_.getSceneManager()->getCurrentScene() != nullptr) {
+		m_WindowManager_.getSceneManager()->getCurrentScene()->Update(dTime);
+	}
 }
 
 
@@ -39,20 +43,24 @@ void Game::beginLoop() {
 	const float TICKS_PER_SECOND = 1.0f / 60.0f;
 	double tick = 0.0;
 
+	
 
 	//Start the Scenes Components.
-	m_SceneManager_.getCurrentScene()->Start();
+	if(m_WindowManager_.getSceneManager()->getCurrentScene() != nullptr)
+		m_WindowManager_.getSceneManager()->getCurrentScene()->Start();
 
 	while (!glfwWindowShouldClose(m_WindowManager_.getWindow()))
 	{
 
-
+		
 		// Measure speed
 		double currentTime = glfwGetTime();
 		nbFrames++;
 
 		if (currentTime - lastTime >= 1.0) { 
 			std::cout << nbFrames << std::endl;
+
+			ResourceManager::getInstance()->assignTextIdentifier("fps", to_string(nbFrames));
 			nbFrames = 0;
 			lastTime += 1.0;
 
@@ -84,16 +92,39 @@ void Game::beginLoop() {
 		while (tick >= TICKS_PER_SECOND) {
 			float fDelay = (tick / TICKS_PER_SECOND);
 
-			update(frame);
+
+			if (m_WindowManager_.getSceneManager()->NewSceneReady()) {
+				m_WindowManager_.getSceneManager()->switchScene();
+				m_WindowManager_.getSceneManager()->UpdateRenderers(m_Renderer_, m_GUIRenderer_);
+				m_WindowManager_.getSceneManager()->getCurrentScene()->Start();
+			}
+
+			update(fDelay);
 
 			tick -= TICKS_PER_SECOND;
 
 		}
 		m_Renderer_->Render();
+		m_GUIRenderer_->Render();
+
+
+		glfwSwapBuffers(m_WindowManager_.getWindow());
+		glfwPollEvents();
 	}
 
 	glfwTerminate();
-	exit(EXIT_SUCCESS);
+	std::exit(EXIT_SUCCESS);
+}
+
+void Game::switchScene(std::string pPath) {
+	m_WindowManager_.getSceneManager()->LoadScene(pPath);
+
+	//Start the Scenes Components.
+	if (m_WindowManager_.getSceneManager()->getCurrentScene() != nullptr)
+		m_WindowManager_.getSceneManager()->getCurrentScene()->Start();
+
+	//m_WindowManager_.getSceneManager()->UpdateRenderers(m_Renderer_, m_GUIRenderer_);
+
 }
 
 
@@ -102,34 +133,54 @@ Game::Game() {
 	glfwSetErrorCallback(error_callback);
 
 	if (!glfwInit())
-		exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
 
 	m_WindowManager_.createWindow("Game", 0, 0, 1280, 720);
 	m_WindowManager_.toggleVSYNC(false);
 	
-	//m_Window_ = glfwCreateWindow(1280, 720, "Game", NULL, NULL);
-	glfwMakeContextCurrent(m_WindowManager_.getWindow());
+	glfwMakeContextCurrent(m_WindowManager_.getWindow()); 
 
 	if (!m_WindowManager_.getWindow())
 	{
 		glfwTerminate();	
-		exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
 	}
 
 	glewInit();
 
 	glfwSetKeyCallback(m_WindowManager_.getWindow(), key_callback);
+
+	::glfwSetMouseButtonCallback(m_WindowManager_.getWindow(), Game::mouse_button_callback);
+
+
+
 	ResourceManager::getInstance()->LoadShader("Shaders/default_shader.vert", "Shaders/default_shader.frag", "default");
 	ResourceManager::getInstance()->LoadShader("Shaders/texture_shader.vert", "Shaders/texture_shader.frag", "texture");
-	ResourceManager::getInstance()->loadTexture("Textures/uvtemplate.bmp", GL_FALSE, "TEST");
+	ResourceManager::getInstance()->LoadShader("Shaders/gui_plain_shader.vert", "Shaders/gui_plain_shader.frag", "gui_plain");
+	ResourceManager::getInstance()->LoadShader("Shaders/text_shader.vert", "Shaders/text_shader.frag", "text");
 
+	ResourceManager::getInstance()->loadTexture("Textures/uvtemplate.bmp", GL_FALSE, "TEST");
+	ResourceManager::getInstance()->loadTexture("Textures/RoomTexture.bmp", GL_FALSE, "ROOM");
+	ResourceManager::getInstance()->loadTexture("Textures/font.bmp", GL_FALSE, "FONT");
+
+	ResourceManager::getInstance()->setupTextCharacters("FONT");
+
+	Proxy::getInstance()->AssignWindowManager(&m_WindowManager_);
+
+	m_WindowManager_.toggleCursorDraw(false);
 
 	m_Renderer_ = new Renderer(m_WindowManager_.getWindow());
+	m_GUIRenderer_ = new GUIRenderer(m_WindowManager_.getWindow());
 
-	m_SceneManager_ = SceneManager();
-
-	if (m_SceneManager_.LoadScene(" ")) {
-		m_SceneManager_.UpdateRenderer(m_Renderer_);
+	if (m_WindowManager_.getSceneManager()->LoadScene("XML/MainMenu.xml")) {
+		m_WindowManager_.toggleCursorDraw(true);
+		m_WindowManager_.getSceneManager()->switchScene();
+		m_WindowManager_.getSceneManager()->UpdateRenderers(m_Renderer_, m_GUIRenderer_);
+		
+	}
+	else {
+		glfwTerminate();
+		std::exit(EXIT_FAILURE);
 	}
 
 
@@ -141,6 +192,18 @@ void Game::CreateScene() {
 	
 
 }
+
+
+
+
+void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+
+
+
+	std::cout << "Hi Jaime" << std::endl;
+	InputHandler::invokeButton(button, action, mods);
+}
+
 
 
 //Move somewhere else at some point. Preferably a Launcher file all on its own, isolated from other function calls.

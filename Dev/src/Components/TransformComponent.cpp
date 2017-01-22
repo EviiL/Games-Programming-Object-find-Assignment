@@ -1,8 +1,17 @@
 
 #include "Components\TransformComponent.h"
 
-TransformComponent::TransformComponent(Object * pParent) {
-	m_ObjectParent_ = pParent;
+
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include "Components\FirstPersonCameraComponent.h"
+#include "Components\ThirdPersonCameraComponent.h"
+
+
+
+TransformComponent::TransformComponent(GameObject * pParent) {
+	m_GameObjectParent_ = pParent;
 
 	M_ComponentName = "TRANSFORM_COMPONENT";
 
@@ -11,8 +20,21 @@ TransformComponent::TransformComponent(Object * pParent) {
 void TransformComponent::Update(double dt) {
 
 	//Should probably be moved to the late update, but i'll do that later, cba right now.
-	
+	glm::vec3 _Up = glm::cross(m_Right_, m_Direction_);
+
+	glm::vec3 cross = glm::cross(_Up, m_Direction_);
+	if(m_GameObjectParent_->CheckComponentTypeExists<FirstPersonCameraComponent>())
+		setRotation(glm::vec3(getRotation().x, m_GameObjectParent_->GetComponentByType<FirstPersonCameraComponent>()->m_fHorizontalAngle_, getRotation().z));
+
+	if (m_GameObjectParent_->CheckComponentTypeExists<ThirdPersonCameraComponent>())
+		setRotation(glm::vec3(getRotation().x, m_GameObjectParent_->GetComponentByType<ThirdPersonCameraComponent>()->m_fHorizontalAngle_, getRotation().z));
+
+
 	if (m_bDirty_) {
+
+
+		float angleZ = -std::asin(m_Direction_.z);
+
 		m_Model_ = glm::translate(m_Model_, m_Position_);  // First translate (transformations are: scale happens first, then rotation and then final translation happens; reversed order)
 
 		m_Model_ = glm::translate(m_Model_, glm::vec3(0.5f * m_Scale_.x, 0.5f * m_Scale_.y, 0.5f * m_Scale_.z)); // Move origin of rotation to center of quad
@@ -28,6 +50,7 @@ void TransformComponent::Update(double dt) {
 }
 void TransformComponent::LateUpdate(double dt) {
 
+	
 }
 
 void TransformComponent::Destroy() {
